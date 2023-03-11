@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "efCdCollection.Api", "efCdCollection.Api\efCdCollection.Api.csproj", "{3AF2B830-DECA-4CEC-9EB7-EE732BBA2B74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "efCdCollection.Tests", "efCdCollection.Tests\efCdCollection.Tests.csproj", "{7642DF29-B48F-4528-9993-DBCB5F4A2E86}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3AF2B830-DECA-4CEC-9EB7-EE732BBA2B74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AF2B830-DECA-4CEC-9EB7-EE732BBA2B74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AF2B830-DECA-4CEC-9EB7-EE732BBA2B74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AF2B830-DECA-4CEC-9EB7-EE732BBA2B74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7642DF29-B48F-4528-9993-DBCB5F4A2E86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7642DF29-B48F-4528-9993-DBCB5F4A2E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7642DF29-B48F-4528-9993-DBCB5F4A2E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7642DF29-B48F-4528-9993-DBCB5F4A2E86}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
