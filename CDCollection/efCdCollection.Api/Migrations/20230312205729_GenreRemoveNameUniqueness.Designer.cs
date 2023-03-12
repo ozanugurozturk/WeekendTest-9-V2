@@ -12,8 +12,8 @@ using efCdCollection.Api;
 namespace efCdCollection.Api.Migrations
 {
     [DbContext(typeof(CdCollectionDbContext))]
-    [Migration("20230312185710_NewEditsOnModels")]
-    partial class NewEditsOnModels
+    [Migration("20230312205729_GenreRemoveNameUniqueness")]
+    partial class GenreRemoveNameUniqueness
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,6 +64,7 @@ namespace efCdCollection.Api.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -74,15 +75,10 @@ namespace efCdCollection.Api.Migrations
             modelBuilder.Entity("efCdCollection.Api.Models.CD", b =>
                 {
                     b.HasOne("efCdCollection.Api.Models.Genre", "Genre")
-                        .WithMany("CDs")
+                        .WithMany()
                         .HasForeignKey("GenreId");
 
                     b.Navigation("Genre");
-                });
-
-            modelBuilder.Entity("efCdCollection.Api.Models.Genre", b =>
-                {
-                    b.Navigation("CDs");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,8 +12,8 @@ using efCdCollection.Api;
 namespace efCdCollection.Api.Migrations
 {
     [DbContext(typeof(CdCollectionDbContext))]
-    [Migration("20230312190208_GenresCdPropIsDeleted")]
-    partial class GenresCdPropIsDeleted
+    [Migration("20230312210018_GenreAddingNameUniqueness")]
+    partial class GenreAddingNameUniqueness
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,9 +64,13 @@ namespace efCdCollection.Api.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Genres");
                 });

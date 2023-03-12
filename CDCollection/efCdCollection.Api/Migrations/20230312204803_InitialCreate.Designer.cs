@@ -12,7 +12,7 @@ using efCdCollection.Api;
 namespace efCdCollection.Api.Migrations
 {
     [DbContext(typeof(CdCollectionDbContext))]
-    [Migration("20230311205716_InitialCreate")]
+    [Migration("20230312204803_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -39,13 +39,13 @@ namespace efCdCollection.Api.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("GenreId")
+                    b.Property<int?>("GenreId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("PurchaseDate")
+                    b.Property<DateTime?>("PurchaseDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -64,9 +64,13 @@ namespace efCdCollection.Api.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Genres");
                 });
@@ -74,17 +78,10 @@ namespace efCdCollection.Api.Migrations
             modelBuilder.Entity("efCdCollection.Api.Models.CD", b =>
                 {
                     b.HasOne("efCdCollection.Api.Models.Genre", "Genre")
-                        .WithMany("CDs")
-                        .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("GenreId");
 
                     b.Navigation("Genre");
-                });
-
-            modelBuilder.Entity("efCdCollection.Api.Models.Genre", b =>
-                {
-                    b.Navigation("CDs");
                 });
 #pragma warning restore 612, 618
         }

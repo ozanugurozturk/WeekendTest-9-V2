@@ -31,14 +31,9 @@ namespace efCdCollection.Api.Controllers
             }
             cds = cds.Where(c => c.Genre.Name.ToLower() == genre.ToLower());
 
-            var resultList = await cds.Include(c => c.Genre)
-                                    .Select(c=>new CDDto {
-                                        Id = c.Id,
-                                        Name = c.Name,
-                                        Artist = c.ArtistName,
-                                        Genre = c.Genre.Name
-                                    }).ToListAsync();
-
+            var resultList = await cds.Where(c => c.Genre.Name.ToLower() == genre.ToLower())
+                                        .Include(c => c.Genre)
+                                        .ToListAsync();
             return Ok(resultList);
         }
 
@@ -108,7 +103,7 @@ namespace efCdCollection.Api.Controllers
         public async Task<ActionResult> SeedData()
         {
             var genreFaker = new Faker<Genre>()
-                            .RuleFor(g => g.Id, f => ((short)f.IndexFaker))
+                            .RuleFor(g => g.Id, f => f.IndexFaker)
                             .RuleFor(g => g.Name, f => f.Company.CompanyName());
 
             var genres = genreFaker.Generate(7);
@@ -131,14 +126,5 @@ namespace efCdCollection.Api.Controllers
             
             return Ok("Data seeded!!!");
         }
-
-    }
-
-    public class CDDto
-    {
-        public int Id { get; set; }
-        public string? Name { get; set; }
-        public string? Artist { get; set; }
-        public string? Genre { get; set; }
     }
 }
