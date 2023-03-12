@@ -111,7 +111,6 @@ namespace efCdCollection.Api.Controllers
         public async Task<ActionResult> SeedData()
         {
             var genreFaker = new Faker<Genre>()
-                            .RuleFor(g => g.Id, f => f.Random.Number(10,100))
                             .RuleFor(g => g.Name, f => f.Company.CompanyName());
 
             var genres = genreFaker.Generate(7);
@@ -120,7 +119,6 @@ namespace efCdCollection.Api.Controllers
             await _context.SaveChangesAsync();
 
             var cdFaker = new Faker<CD>()
-                            .RuleFor(c => c.Id, f => f.Random.Number(10,100))
                             .RuleFor(c => c.Name, f => f.Lorem.Sentence())
                             .RuleFor(c => c.ArtistName, f => f.Name.FirstName())
                             .RuleFor(c => c.Description, f => f.Lorem.Paragraph())
