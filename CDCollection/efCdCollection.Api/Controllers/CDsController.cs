@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using efCdCollection.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Bogus;
 
 namespace efCdCollection.Api.Controllers
 {
@@ -99,6 +100,34 @@ namespace efCdCollection.Api.Controllers
             _context.CDs.Remove(cd);
             await _context.SaveChangesAsync();
             return Ok();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SeedData()
+        {
+            var genreFaker = new Faker<Genre>()
+                            .RuleFor(g => g.Id, f => f.IndexFaker)
+                            .RuleFor(g => g.Name, f => f.Company.CompanyName());
+
+            var genres = genreFaker.Generate(7);
+
+            await _context.Genres.AddRangeAsync(genres);
+            await _context.SaveChangesAsync();
+
+            var cdFaker = new Faker<CD>()
+                            .RuleFor(c => c.Id, f => f.IndexFaker)
+                            .RuleFor(c => c.Name, f => f.Lorem.Sentence())
+                            .RuleFor(c => c.ArtistName, f => f.Name.FirstName())
+                            .RuleFor(c => c.Description, f => f.Lorem.Paragraph())
+                            .RuleFor(c => c.PurchaseDate, f => f.Date.Past(2))
+                            .RuleFor(c => c.Genre, f => f.PickRandom(genres));
+            
+            var cds = cdFaker.Generate(25);
+
+            await _context.CDs.AddRangeAsync(cds);
+            await _context.SaveChangesAsync();
+            
+            return Ok("Data seeded!!!");
         }
 
     }

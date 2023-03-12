@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "efCdCollection.Api/1.0.0": {
         "dependencies": {
+          "Bogus": "22.0.2",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.3",
           "Microsoft.EntityFrameworkCore.Tools": "7.0.3",
           "Swashbuckle.AspNetCore": "6.2.3"
@@ -47,6 +48,14 @@
           "lib/netstandard2.0/Azure.Identity.dll": {
             "assemblyVersion": "1.6.0.0",
             "fileVersion": "1.600.22.20503"
+          }
+        }
+      },
+      "Bogus/22.0.2": {
+        "runtime": {
+          "lib/netstandard2.0/Bogus.dll": {
+            "assemblyVersion": "22.0.2.0",
+            "fileVersion": "22.0.2.0"
           }
         }
       },
@@ -767,6 +776,13 @@
       "sha512": "sha512-EycyMsb6rD2PK9P0SyibFfEhvWWttdrYhyPF4f41uzdB/44yQlV+2Wehxyg489Rj6gbPvSPgbKq0xsHJBhipZA==",
       "path": "azure.identity/1.6.0",
       "hashPath": "azure.identity.1.6.0.nupkg.sha512"
+    },
+    "Bogus/22.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-N0oeJ4wlT+OwS1IgZ3UXdJqoOiXKEmdXKZ+uiQC3uEAVTYG1hkxIXYMQxRu0nMxbSc/TZQKNhFFB8RHAffmu8w==",
+      "path": "bogus/22.0.2",
+      "hashPath": "bogus.22.0.2.nupkg.sha512"
     },
     "Humanizer.Core/2.14.1": {
       "type": "package",
