@@ -54,7 +54,7 @@ namespace efCdCollection.Api.Controllers
             return Ok(); // ok or nocontent?
         }
 
-        [HttpPut("{id}/artist")]
+        [HttpPut("{id}/genre")]
         public async Task<ActionResult> UpdateGenre(int id, [FromBody] string genreName) //??? genre.name?
         {
             var cd = await _context.CDs.FindAsync(id);
