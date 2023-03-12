@@ -103,10 +103,11 @@ namespace efCdCollection.Api.Controllers
         }
 
         [HttpPost]
+        [Route("api/SeedData")]
         public async Task<ActionResult> SeedData()
         {
             var genreFaker = new Faker<Genre>()
-                            .RuleFor(g => g.Id, f => f.IndexFaker)
+                            .RuleFor(g => g.Id, f => ((short)f.IndexFaker))
                             .RuleFor(g => g.Name, f => f.Company.CompanyName());
 
             var genres = genreFaker.Generate(7);

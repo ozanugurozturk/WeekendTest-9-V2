@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using efCdCollection.Api;
 
@@ -11,9 +12,11 @@ using efCdCollection.Api;
 namespace efCdCollection.Api.Migrations
 {
     [DbContext(typeof(CdCollectionDbContext))]
-    partial class CdCollectionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230312190208_GenresCdPropIsDeleted")]
+    partial class GenresCdPropIsDeleted
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using efCdCollection.Api;
 
@@ -11,9 +12,11 @@ using efCdCollection.Api;
 namespace efCdCollection.Api.Migrations
 {
     [DbContext(typeof(CdCollectionDbContext))]
-    partial class CdCollectionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230312185710_NewEditsOnModels")]
+    partial class NewEditsOnModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,10 +74,15 @@ namespace efCdCollection.Api.Migrations
             modelBuilder.Entity("efCdCollection.Api.Models.CD", b =>
                 {
                     b.HasOne("efCdCollection.Api.Models.Genre", "Genre")
-                        .WithMany()
+                        .WithMany("CDs")
                         .HasForeignKey("GenreId");
 
                     b.Navigation("Genre");
+                });
+
+            modelBuilder.Entity("efCdCollection.Api.Models.Genre", b =>
+                {
+                    b.Navigation("CDs");
                 });
 #pragma warning restore 612, 618
         }
