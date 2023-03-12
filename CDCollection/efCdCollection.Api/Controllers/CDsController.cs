@@ -21,14 +21,15 @@ namespace efCdCollection.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CD>>> GetCDs([FromQuery] string genre ="")
+        public async Task<ActionResult<IEnumerable<CD>>> GetCDs([FromQuery] string? genre ="")
         {
             IQueryable<CD> cds = _context.CDs;
             
-            if (!string.IsNullOrEmpty(genre))
+            if (string.IsNullOrEmpty(genre)) // 1. durum icin don
             {
-                cds = cds.Where(c => c.Genre.Name.ToLower() == genre.ToLower());
+                return Ok(cds.Include(c => c.Genre));
             }
+            cds = cds.Where(c => c.Genre.Name.ToLower() == genre.ToLower());
 
             var resultList = await cds.Include(c => c.Genre)
                                     .Select(c=>new CDDto {
