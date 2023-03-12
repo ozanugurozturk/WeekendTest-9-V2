@@ -9,7 +9,7 @@ namespace efCdCollection.Api
         {
         }
 
-        public DbSet<CD> CDs { get; set; }
-        public DbSet<Genre> Genres { get; set; }
+        public virtual DbSet<CD> CDs { get; set; }
+        public virtual DbSet<Genre> Genres { get; set; }
     }
 }
