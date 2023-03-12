@@ -82,6 +82,14 @@ namespace efCdCollection.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<CD>> PostCD(CD cd)
         {
+            var genreName = cd.Genre.Name;
+            var existingGenre = _context.Genres.Where(g => g.Name.ToLower() == genreName.ToLower()).SingleOrDefault();
+
+            if (existingGenre != null)
+            {
+                cd.Genre=existingGenre;
+            }
+           
             _context.CDs.Add(cd);
             await _context.SaveChangesAsync(); 
             return CreatedAtAction(nameof(GetOneCD), new {id = cd.Id}, cd);
@@ -103,7 +111,7 @@ namespace efCdCollection.Api.Controllers
         public async Task<ActionResult> SeedData()
         {
             var genreFaker = new Faker<Genre>()
-                            .RuleFor(g => g.Id, f => f.IndexFaker)
+                            .RuleFor(g => g.Id, f => f.Random.Number(10,100))
                             .RuleFor(g => g.Name, f => f.Company.CompanyName());
 
             var genres = genreFaker.Generate(7);
@@ -112,7 +120,7 @@ namespace efCdCollection.Api.Controllers
             await _context.SaveChangesAsync();
 
             var cdFaker = new Faker<CD>()
-                            .RuleFor(c => c.Id, f => f.IndexFaker)
+                            .RuleFor(c => c.Id, f => f.Random.Number(10,100))
                             .RuleFor(c => c.Name, f => f.Lorem.Sentence())
                             .RuleFor(c => c.ArtistName, f => f.Name.FirstName())
                             .RuleFor(c => c.Description, f => f.Lorem.Paragraph())
