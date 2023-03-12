@@ -10,7 +10,7 @@ namespace efCdCollection.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CDsController : ControllerBase //Check all response types according to requested style
+    public class CDsController : ControllerBase
     {
         private readonly CdCollectionDbContext _context;
 
@@ -29,17 +29,25 @@ namespace efCdCollection.Api.Controllers
                 cds = cds.Where(c => c.Genre.Name.ToLower() == genre.ToLower());
             }
 
-            return Ok(await _context.CDs.ToListAsync()); // bad request??
+            var resultList = await cds.Include(c => c.Genre)
+                                    .Select(c=>new CDDto {
+                                        Id = c.Id,
+                                        Name = c.Name,
+                                        Artist = c.ArtistName,
+                                        Genre = c.Genre.Name
+                                    }).ToListAsync();
+
+            return Ok(resultList);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<CD>> GetOneCD(int id)
         {
-            var cd = await _context.CDs.Include(c => c.Genre).FirstOrDefaultAsync(c => c.Id == id); //another one???
+            var cd = await _context.CDs.Include(c => c.Genre).FirstOrDefaultAsync(c => c.Id == id);
 
             if (cd == null) return NotFound();
 
-            return Ok(cd); //bad response ???
+            return Ok(cd);
         }
 
         [HttpPut("{id}/artist")]
@@ -51,11 +59,11 @@ namespace efCdCollection.Api.Controllers
             cd.ArtistName = artistName;
             await _context.SaveChangesAsync();
 
-            return Ok(); // ok or nocontent?
+            return Ok();
         }
 
         [HttpPut("{id}/genre")]
-        public async Task<ActionResult> UpdateGenre(int id, [FromBody] string genreName) //??? genre.name?
+        public async Task<ActionResult> UpdateGenre(int id, [FromBody] string genreName)
         {
             var cd = await _context.CDs.FindAsync(id);
             if (cd == null) return NotFound();
@@ -93,5 +101,13 @@ namespace efCdCollection.Api.Controllers
             return Ok();
         }
 
+    }
+
+    public class CDDto
+    {
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public string? Artist { get; set; }
+        public string? Genre { get; set; }
     }
 }
