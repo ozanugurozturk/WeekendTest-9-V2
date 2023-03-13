@@ -18,14 +18,14 @@ using Microsoft.Data.Sqlite;
 namespace efCdCollection.Tests
 {
     public class SqliteControllerTest : ControllerTests
-{
-    public SqliteControllerTest() 
-        : base(new DbContextOptionsBuilder<CdCollectionDbContext>()
-            .UseSqlite("Filename=Test.db")
-            .Options)
     {
+        public SqliteControllerTest()
+            : base(new DbContextOptionsBuilder<CdCollectionDbContext>()
+                .UseSqlite("Filename=Test.db")
+                .Options)
+        {
+        }
     }
-}
 
     public abstract class ControllerTests
     {
@@ -36,7 +36,7 @@ namespace efCdCollection.Tests
         }
 
         protected DbContextOptions<CdCollectionDbContext> ContextOptions { get; }
-        private void Seed()
+        public void Seed()
         {
             using (var context = new CdCollectionDbContext(ContextOptions))
             {
@@ -87,6 +87,80 @@ namespace efCdCollection.Tests
                 Assert.Equal("artist2", cds.Result.Value.ToList()[1].ArtistName);
                 Assert.Equal("This is the description for CD3", cds.Result.Value.ToList()[2].Description);
                 Assert.Equal("Pop", cds.Result.Value.ToList()[1].Genre.Name);
+            }
+        }
+        [Fact]
+        public async Task GetOneCD_WithExistingCDId_ReturnsCD()
+        {
+            using (var context = new CdCollectionDbContext(ContextOptions))
+            {
+                var controller = new CDsController(context);
+                var result = await controller.GetOneCD(1);
+
+                Assert.IsType<OkObjectResult>(result.Result);
+                var cd = Assert.IsType<CD>((result.Result as OkObjectResult).Value);
+                Assert.Equal("cd1", cd.Name);
+            }
+        }
+        [Fact]
+        public async Task GetOneCD_WithNonExistingCDId_ReturnsNotFound()
+        {
+            using (var context = new CdCollectionDbContext(ContextOptions))
+            {
+                var controller = new CDsController(context);
+                var result = await controller.GetOneCD(99);
+
+                Assert.IsType<NotFoundResult>(result.Result);
+            }
+        }
+        [Fact]
+        public async Task UpdateArtist_WithExistingCDId_ReturnsOk()
+        {
+            using (var context = new CdCollectionDbContext(ContextOptions))
+            {
+                var controller = new CDsController(context);
+                var result = await controller.UpdateArtist(1, "Artist A");
+
+                Assert.IsType<OkResult>(result);
+                var cd = await context.CDs.FindAsync(1);
+                Assert.Equal("Artist A", cd.ArtistName);
+            }
+        }
+        [Fact]
+        public async Task UpdateArtist_WithNonExistingCDId_ReturnsNotFound()
+        {
+            using (var context = new CdCollectionDbContext(ContextOptions))
+            {
+                var controller = new CDsController(context);
+                var result = await controller.UpdateArtist(99, "Artist B");
+
+                Assert.IsType<NotFoundResult>(result);
+            }
+        }
+        [Fact]
+        public async Task UpdateGenre_WithExistingCDIdAndExistingGenreName_ReturnsOk()
+        {
+            using (var context = new CdCollectionDbContext(ContextOptions))
+            {
+                var controller = new CDsController(context);
+                var result = await controller.UpdateGenre(1, "rock");
+
+                Assert.IsType<OkResult>(result);
+                var cd = await context.CDs.FindAsync(1);
+                Assert.Equal("rock", cd.Genre.Name.ToLower());
+            }
+        }
+        [Fact]
+        public async Task UpdateGenre_WithExistingCDIdAndNonExistingGenreName_ReturnsOk()
+        {
+            using (var context = new CdCollectionDbContext(ContextOptions))
+            {
+                var controller = new CDsController(context);
+                var result = await controller.UpdateGenre(1, "country");
+
+                Assert.IsType<OkResult>(result);
+                var cd = await context.CDs.FindAsync(1);
+                Assert.Equal("country", cd.Genre.Name.ToLower());
             }
         }
     }
